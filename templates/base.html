@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{{ title }}</title>
+        <title>{{title}}</title>
         <style>
             html {
-                background-color: aquamarine
+                background-color: rgb(110, 174, 247)
             }
             .error {
                 color: red;
@@ -12,14 +12,50 @@
             label {
                 padding: 20px;
             }
+            .log {
+                float:right;
+            }
+            .nav a {
+                color: whitesmoke;
+                float: left;
+                padding: 14px 12px;
+                text-align: center;
+                font-size: 20px;
+                text-decoration: none;  
+            }
+            .nav a:hover {
+                background-color: gainsboro;
+                color: black;
+            }
+            .nav {
+                background-color: black;
+                overflow: hidden;
+            }
+            .signuplink{
+                font-size: 18px
+            }
         </style>
     </head>
     <body>
-
-        <a href='/blog'>Main Page</a>
-        <a href='/newpost'>Add Post</a>
-
+        <div class='nav'>
+            <a href='/'>Home</a>
+            <a href='/blog'>Blogs</a>
+            <a href='/newpost'>Add Blog</a>
+            <div class='log'>
+                <a href='/login'>LOGIN</a>
+                <a href='/logout'>SIGN OUT</a>
+            </div>
+        </div>
+        
         <h1>{{title}}</h1>
+
+        {% with messages = get_flashed_messages(with_categories = True) %}
+            <ul>
+            {% for category, message in messages %}
+                <li class='{{category}}'>{{message}}</li>
+            {% endfor %}
+            </ul>
+        {% endwith %}
 
         {% block content %}
         {% endblock %}

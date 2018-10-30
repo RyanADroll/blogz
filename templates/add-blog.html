@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+    <form action='/blog', method='post'>
+        <h3 class="error">{{error}}</h3>
+        <input type='hidden' name='owner_id' value = '{{owner_id}}' />
+        <label>
+            <h2>Title</h2>
+            <br/>
+            <input type='text' name='title' value='{{post_title}}' />
+        </label>
+        <br/> 
+        <br/> 
+        <label>
+            <h2>Blog Text</h2>
+            <br>
+            <textarea name='body' maxlenght='5000'
+            cols='80' rows='15'>{{post_body}}</textarea>
+        </label>
+        <br/>
+        <br/>
+        <input type="submit" value='Add Entry' />
+    </form>
+{% endblock %}
