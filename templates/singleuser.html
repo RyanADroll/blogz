@@ -2,14 +2,15 @@
 
 {% block content %}
 
-    
-        <h1>{{username}}Blogs</h1>
+        <h1>Single User Blogs</h1>
 
     {% if posts|length == 0 %}
     <p>No entries yet.</p>
     {% else %}
         {% for post in posts %}
             <h2><a href="/blog?id={{post.id}}">{{post.title}}</a></h2>
+            <p>{{post.body}}</p>
+            <h3>Written by:<a href="/blog?user={{post.owner.id}}">{{post.owner.username}}</a></h3>
             <hr />
         {% endfor %}
     {% endif %}

@@ -52,7 +52,7 @@ def index():
 @app.route('/login', methods = ['POST', 'GET'])
 
 def login():
-    
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -102,7 +102,7 @@ def signup():
 def logout():
 
     del session['username']
-    return redirect('/blog')
+    return redirect('/')
 
 
 @app.route('/blog', methods = ['POST', 'GET'])
@@ -111,18 +111,6 @@ def blog():
 
     blog_id = request.args.get('id')
     user_id = request.args.get('user')
-    if request.method == 'POST':
-        new_post_title = request.form['title']
-        new_post_body = request.form['body']
-        new_post_owner_id = request.form['owner_id']
-        owner = User.query.filter_by(id = new_post_owner_id).first()
-        if (not new_post_title) or (not new_post_body):
-            error = "You done goofed, please fill out both feilds"
-            return render_template('add-blog.html', post_title = new_post_title, post_body = new_post_body, error = error)
-        post = Blog(new_post_title, new_post_body, owner)
-        db.session.add(post)
-        db.session.commit()
-        return redirect('/blog?id='+str(post.id))
     if blog_id:
         post = Blog.query.filter_by(id=blog_id).first()
         return render_template('display-post.html', title = post.title, post = post)
@@ -137,9 +125,21 @@ def blog():
 @app.route('/newpost', methods = ['POST', 'GET'])
 
 def add_blog():
+
     username = session['username']
     owner = User.query.filter_by(username = username).first()
-    return render_template('add-blog.html', title = 'Build-a-Blog', owner = owner)
+    if request.method == 'POST':
+        new_post_title = request.form['title']
+        new_post_body = request.form['body']
+        if (not new_post_title) or (not new_post_body):
+            error = "You done goofed, please fill out both feilds"
+            return render_template('add-blog.html', post_title = new_post_title, post_body = new_post_body, error = error)
+        else:
+            post = Blog(new_post_title, new_post_body, owner)
+            db.session.add(post)
+            db.session.commit()
+            return redirect('/blog?id='+str(post.id))
+    return render_template('add-blog.html', title = 'Add Blog', owner = owner)
 
 
 if __name__ == '__main__':
